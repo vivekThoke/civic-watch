@@ -21,4 +21,7 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Role role;
 }
