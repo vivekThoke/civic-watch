@@ -14,9 +14,16 @@ import java.util.Date;
 public class JwtUtil {
     private final String SECRET_KEY = "my-secret-key-which-should-be-long";
 
-    private Key getSigningKey(){
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    private final Key key;
+
+    public JwtUtil(){
+        byte[] keyBytes = Base64.getEncoder().encode(SECRET_KEY.getBytes());
+        this.key = Keys.hmacShaKeyFor(keyBytes);
     }
+
+//    private Key getSigningKey(){
+//        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+//    }
 
 
     public String generateToke(String email, String role) {
@@ -25,13 +32,13 @@ public class JwtUtil {
                 .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String extractEmail(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
