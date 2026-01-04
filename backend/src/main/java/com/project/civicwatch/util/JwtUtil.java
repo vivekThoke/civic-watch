@@ -21,10 +21,6 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-//    private Key getSigningKey(){
-//        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-//    }
-
 
     public String generateToke(String email, String role) {
         return Jwts.builder()

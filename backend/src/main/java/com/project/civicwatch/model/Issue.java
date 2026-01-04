@@ -37,4 +37,6 @@ public class Issue {
     @ManyToOne
     private IssueCategory category;
 
+    private int upVote;
+
 }
