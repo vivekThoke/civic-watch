@@ -6,9 +6,6 @@ function App() {
   return (
     <>
       <AppRoutes />
-      <h1 className="bg-green-500 text-3xl">
-        HI
-      </h1>
     </>
   )
 }
