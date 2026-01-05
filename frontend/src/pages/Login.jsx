@@ -35,16 +35,19 @@ const Login = () => {
                         placeholder='Email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        required/>
+                        required
+                        className="w-full mb-3 p-2 border rounded"/>
 
                 {/* Password */}
                 <input type='password'
                         placeholder='Password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        required/>
+                        required
+                        className="w-full mb-3 p-2 border rounded"/>
 
-                <button type='submit'>Login</button>
+                <button type='submit'
+                        className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Login</button>
 
             </form>
         </div>
