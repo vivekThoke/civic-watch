@@ -42,7 +42,7 @@ public class IssueController {
 
         Issue issue = issueService.createIssue(request, user);
 
-        return new IssueResponse(issue.getId(), issue.getTitle(), issue.getStatus().name(), issue.getLocality(), issue.getCategory().getName());
+        return new IssueResponse(issue.getId(), issue.getTitle(), issue.getStatus().name(), issue.getLocality(), issue.getCategory().getName(), issue.getCreatedAt());
 
     }
 

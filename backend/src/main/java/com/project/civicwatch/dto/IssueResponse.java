@@ -4,6 +4,8 @@ import com.project.civicwatch.model.Issue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 public class IssueResponse {
@@ -12,6 +14,7 @@ public class IssueResponse {
     private String status;
     private String locality;
     private String categoryName;
+    private LocalDateTime createdAt;
 
     public IssueResponse() {
 
@@ -24,6 +27,7 @@ public class IssueResponse {
         response.status = issue.getStatus().name();
         response.locality = issue.getLocality();
         response.categoryName = issue.getCategory().getName();
+        response.createdAt = issue.getCreatedAt();
         return response;
     }
 }
