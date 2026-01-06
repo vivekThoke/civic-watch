@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import api from '../api/axios';
+import { Navigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -50,6 +51,7 @@ const Login = () => {
                         className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Login</button>
 
             </form>
+            {/* <p>New User ? {<Navigate to="/register"/>}</p> */}
         </div>
     )
 }
