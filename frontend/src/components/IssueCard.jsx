@@ -1,11 +1,15 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const IssueCard = ({ issue }) => {
+    const navigate = useNavigate();
     return (
-        <div className="bg-white rounded-lg border shadow-sm hover:shadow-md transition-shadow duration-200 flex">
+        <div className="bg-white rounded-lg border shadow-sm hover:shadow-md transition-shadow duration-200 flex"
+              onClick={() => navigate(`/issues/${issue.id}`)}>
 
             {/* Upvote Section */}
-            <div className="w-14 bg-gray-50 border-r rounded-l-lg flex flex-col items-center py-4">
+            <div className="w-14 bg-gray-50 border-r rounded-l-lg flex flex-col items-center py-4"
+                  >
                 <button className="text-gray-400 hover:text-orange-500 text-xl">
                     ▲
                 </button>
@@ -13,6 +17,7 @@ const IssueCard = ({ issue }) => {
                     {issue.upvotes}
                 </span>
             </div>
+           
 
             {/* Content */}
             <div className="flex-1 p-4">
@@ -33,7 +38,7 @@ const IssueCard = ({ issue }) => {
                     <span className="flex items-center gap-1">
                         🕒 {new Date(issue.createdAt).toLocaleDateString()}
                     </span>
-                        
+
                     <span
                         className={`px-2 py-0.5 rounded-full text-white text-xs font-medium
                         ${issue.status === "REPORTED" ? "bg-yellow-500" :
