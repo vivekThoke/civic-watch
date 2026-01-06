@@ -3,6 +3,7 @@ package com.project.civicwatch.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.civicwatch.dto.IssueCreateRequest;
+import com.project.civicwatch.dto.IssueDetailResponse;
 import com.project.civicwatch.dto.IssueResponse;
 import com.project.civicwatch.model.Issue;
 import com.project.civicwatch.model.IssueStatus;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,8 +44,18 @@ public class IssueController {
 
         Issue issue = issueService.createIssue(request, user);
 
-        return new IssueResponse(issue.getId(), issue.getTitle(), issue.getStatus().name(), issue.getLocality(), issue.getCategory().getName(), issue.getCreatedAt());
+        return new IssueResponse(issue.getId(),
+                issue.getTitle(),
+                issue.getStatus().name(), issue.getLocality(),
+                issue.getCategory().getName(),
+                issue.getCreatedAt(),
+                issue.getDescription());
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<IssueDetailResponse> getIssueById(@PathVariable Long id){
+        return ResponseEntity.ok(issueService.getIssueById(id));
     }
 
     @GetMapping("/public")

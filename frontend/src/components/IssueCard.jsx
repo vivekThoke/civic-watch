@@ -33,7 +33,7 @@ const IssueCard = ({ issue }) => {
                     <span className="flex items-center gap-1">
                         🕒 {new Date(issue.createdAt).toLocaleDateString()}
                     </span>
-                    
+                        
                     <span
                         className={`px-2 py-0.5 rounded-full text-white text-xs font-medium
                         ${issue.status === "REPORTED" ? "bg-yellow-500" :

@@ -15,6 +15,7 @@ public class IssueResponse {
     private String locality;
     private String categoryName;
     private LocalDateTime createdAt;
+    private String description;
 
     public IssueResponse() {
 
@@ -28,6 +29,7 @@ public class IssueResponse {
         response.locality = issue.getLocality();
         response.categoryName = issue.getCategory().getName();
         response.createdAt = issue.getCreatedAt();
+        response.description = issue.getDescription();
         return response;
     }
 }

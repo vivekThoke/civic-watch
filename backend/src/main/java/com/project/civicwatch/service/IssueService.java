@@ -1,6 +1,9 @@
 package com.project.civicwatch.service;
 
+import com.project.civicwatch.dto.ImageResponse;
 import com.project.civicwatch.dto.IssueCreateRequest;
+import com.project.civicwatch.dto.IssueDetailResponse;
+import com.project.civicwatch.dto.StatusHistoryResponse;
 import com.project.civicwatch.model.Issue;
 import com.project.civicwatch.model.IssueCategory;
 import com.project.civicwatch.model.IssueStatus;
@@ -33,5 +36,33 @@ public class IssueService {
                 .build();
 
         return issueRepository.save(issue);
+    }
+
+    public IssueDetailResponse getIssueById(Long id){
+        Issue issue = issueRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Issue not found"));
+        return mapToDetailResponse(issue);
+    }
+
+    private IssueDetailResponse mapToDetailResponse(Issue issue) {
+        return IssueDetailResponse.builder()
+                .id(issue.getId())
+                .title(issue.getTitle())
+                .description(issue.getDescription())
+                .category(issue.getCategory().getName())
+                .status(issue.getStatus())
+                .locality(issue.getLocality())
+                .upvotes(issue.getUpVote())
+                .createdAt(issue.getCreatedAt())
+                .images(issue.getImages().stream()
+                        .map(img -> new ImageResponse(img.getId(), img.getImgUrl())).toList())
+                .statusHistory(issue.getStatusHistory().stream()
+                        .map(history -> new StatusHistoryResponse(
+                                history.getStatus(),
+                                history.getRemark(),
+                                history.getUpdatedAt()
+                        )).toList())
+                .build();
+
     }
 }
