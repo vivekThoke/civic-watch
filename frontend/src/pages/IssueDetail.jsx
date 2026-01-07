@@ -7,7 +7,7 @@ const IssueDetail = () => {
     const [issue, setIssue] = useState(null);
 
     useEffect(() => {
-        api.get(`/issues/${id}`)
+        api.get(`/issues/public/${id}`)
         .then(res => setIssue(res.data))
         .catch(err => console.log(err));
     }, [id]);

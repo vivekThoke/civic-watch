@@ -53,7 +53,7 @@ public class IssueController {
 
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/{id}")
     public ResponseEntity<IssueDetailResponse> getIssueById(@PathVariable Long id){
         return ResponseEntity.ok(issueService.getIssueById(id));
     }
