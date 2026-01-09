@@ -1,6 +1,7 @@
 package com.project.civicwatch.dto;
 
 import com.project.civicwatch.model.Issue;
+import com.project.civicwatch.model.IssueUpvote;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -30,6 +31,7 @@ public class IssueResponse {
         response.categoryName = issue.getCategory().getName();
         response.createdAt = issue.getCreatedAt();
         response.description = issue.getDescription();
+
         return response;
     }
 }

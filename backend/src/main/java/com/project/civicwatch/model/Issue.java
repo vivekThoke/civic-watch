@@ -47,4 +47,6 @@ public class Issue {
     @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY)
     private List<IssueStatusHistory> statusHistory;
 
+    @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY)
+    private IssueUpvote issueUpvote;
 }

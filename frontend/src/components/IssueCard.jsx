@@ -1,8 +1,41 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import isAuthenticated from '../utils/Auth';
+import api from '../api/axios';
 
 const IssueCard = ({ issue }) => {
     const navigate = useNavigate();
+    const [upvotes, setUpvotes] = useState(0);
+    const [upvoted, setUpvoted] = useState(null);
+
+    const toggleUpVote = async (e) => {
+        e.stopPropagation();
+
+        if(!isAuthenticated){
+            navigate("/login");
+            return;
+        }
+
+        try {
+            if(upvoted){
+                await api.delete(`/issues/${issue.id}/upvote`)
+                .then(res => setUpvotes(res.data.upvotes - 1))
+                .then(res => setUpvoted(!res.data.upVotedByMe));
+            }else {
+                
+                setUpvoted(true);
+                await api.post(`/issues/${issue.id}/upvote`)
+                .then(res => setUpvotes(res.data.upvotes + 1))
+                .then(res => setUpvoted(res.data.upVotedByMe));
+            }
+        } catch (err){
+            setUpvotes(issue.upvote);
+            setUpvoted(issue.upVotedByMe);
+            console.log(err);
+        }
+    }
+
+
     return (
         <div className="bg-white rounded-lg border shadow-sm hover:shadow-md transition-shadow duration-200 flex"
               onClick={() => navigate(`/issues/${issue.id}`)}>
@@ -10,14 +43,15 @@ const IssueCard = ({ issue }) => {
             {/* Upvote Section */}
             <div className="w-14 bg-gray-50 border-r rounded-l-lg flex flex-col items-center py-4"
                   >
-                <button className="text-gray-400 hover:text-orange-500 text-xl">
+                <button onClick={toggleUpVote} 
+                    className={`text-xl ${upvoted ? "text-orange-500" : "text-gray-600"}`}>
                     ▲
                 </button>
                 <span className="font-semibold text-sm text-gray-700 mt-1">
-                    {issue.upvotes}
+                    {upvotes}
                 </span>
             </div>
-           
+            {console.log(issue)}
 
             {/* Content */}
             <div className="flex-1 p-4">
