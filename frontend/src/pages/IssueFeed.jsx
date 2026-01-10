@@ -42,7 +42,7 @@ const IssueFeed = () => {
             <Navbar />
 
             {/* Hero Header */}
-            <div className="border-b bg-white/70 backdrop-blur-xl">
+            {/* <div className="border-b bg-white/70 backdrop-blur-xl">
                 <div className="max-w-4xl mx-auto px-4 py-10 text-center">
                     <h1 className="text-3xl font-semibold tracking-tight text-gray-900">
                         Civic Issues
@@ -51,7 +51,7 @@ const IssueFeed = () => {
                         Track, upvote, and follow local civic issues raised by the community.
                     </p>
                 </div>
-            </div>
+            </div> */}
 
             {/* Feed */}
             <div className="max-w-4xl mx-auto px-4 py-10">
