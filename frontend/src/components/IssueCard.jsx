@@ -1,92 +1,108 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import isAuthenticated from '../utils/Auth';
-import api from '../api/axios';
+import isAuthenticated from '../utils/Auth'
+import api from '../api/axios'
 
 const IssueCard = ({ issue }) => {
-    const navigate = useNavigate();
-    const [upvotes, setUpvotes] = useState(0);
-    const [upvoted, setUpvoted] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate()
+    const [upvotes, setUpvotes] = useState(0)
+    const [upvoted, setUpvoted] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const toggleUpVote = async (e) => {
-        e.stopPropagation();
+        e.stopPropagation()
 
-        if(!isAuthenticated()){
-            navigate("/login");
-            return;
+        if (!isAuthenticated()) {
+            navigate("/login")
+            return
         }
 
-        if (loading) return;
-        setLoading(true);
+        if (loading) return
+        setLoading(true)
 
         try {
-            let res;
-            if(upvoted){
-                res = await api.delete(`/issues/${issue.id}/upvote`)
-            }else {
+            const res = upvoted
+                ? await api.delete(`/issues/${issue.id}/upvote`)
+                : await api.post(`/issues/${issue.id}/upvote`)
 
-                res = await api.post(`/issues/${issue.id}/upvote`)
-            }
-
-            setUpvotes(res.data.upvotes);
-            setUpvoted(res.data.upVotedByMe);
-        } catch (err){
-            setUpvotes(issue.upvote);
-            setUpvoted(issue.upVotedByMe);
-            console.log(err);
-        }
-        finally {
-            setLoading(false);
+            setUpvotes(res.data.upvotes)
+            setUpvoted(res.data.upVotedByMe)
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
         }
     }
 
-
     return (
-        <div className="bg-white rounded-lg border shadow-sm hover:shadow-md transition-shadow duration-200 flex"
-              onClick={() => navigate(`/issues/${issue.id}`)}>
+        <div
+            onClick={() => navigate(`/issues/${issue.id}`)}
+            className="
+                group relative cursor-pointer
+                bg-white/70 backdrop-blur-xl
+                border border-gray-200/60
+                rounded-2xl shadow-sm
+                hover:shadow-xl hover:-translate-y-1
+                transition-all duration-300
+                flex overflow-hidden
+            "
+        >
 
-            {/* Upvote Section */}
-            <div className="w-14 bg-gray-50 border-r rounded-l-lg flex flex-col items-center py-4"
-                  >
-                <button onClick={toggleUpVote} 
+            {/* Gradient Accent */}
+            <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-orange-400 via-pink-500 to-purple-500" />
+
+            {/* Upvote */}
+            <div className="w-20 flex flex-col items-center justify-center gap-1 px-4">
+                <button
+                    onClick={toggleUpVote}
                     disabled={loading}
-                    className={`text-xl ${upvoted ? "text-orange-500" : "text-gray-600"}`}>
+                    className={`
+                        w-10 h-10 rounded-full flex items-center justify-center
+                        transition-all duration-200
+                        ${upvoted
+                            ? "bg-orange-500 text-white scale-110 shadow-md"
+                            : "bg-gray-100 text-gray-500 hover:bg-orange-100 hover:text-orange-500"}
+                    `}
+                >
                     ▲
                 </button>
-                <span className="font-semibold text-sm text-gray-700 mt-1">
+
+                <span className="text-sm font-semibold text-gray-700">
                     {upvotes}
                 </span>
             </div>
-            {console.log(issue)}
 
             {/* Content */}
-            <div className="flex-1 p-4">
-                <h2 className="font-semibold text-lg text-gray-900 hover:underline cursor-pointer">
-                    {issue.title}
-                </h2>
+            <div className="flex-1 p-6">
+                <div className="flex items-start justify-between gap-4">
+                    <h2 className="text-lg font-semibold text-gray-900 leading-snug group-hover:text-orange-600 transition">
+                        {issue.title}
+                    </h2>
 
-                <p className="text-gray-700 text-sm mt-2 line-clamp-3">
+                    <span
+                        className={`
+                            px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap
+                            ${issue.status === "REPORTED" && "bg-yellow-100 text-yellow-700"}
+                            ${issue.status === "IN_PROGRESS" && "bg-blue-100 text-blue-700"}
+                            ${issue.status === "RESOLVED" && "bg-green-100 text-green-700"}
+                        `}
+                    >
+                        {issue.status.replace("_", " ")}
+                    </span>
+                </div>
+
+                <p className="text-sm text-gray-600 mt-3 line-clamp-2">
                     {issue.description}
                 </p>
 
-                {/* Meta Info */}
-                <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 mt-4">
+                {/* Meta */}
+                <div className="flex items-center gap-5 text-xs text-gray-500 mt-5">
                     <span className="flex items-center gap-1">
                         📍 {issue.locality}
                     </span>
 
                     <span className="flex items-center gap-1">
                         🕒 {new Date(issue.createdAt).toLocaleDateString()}
-                    </span>
-
-                    <span
-                        className={`px-2 py-0.5 rounded-full text-white text-xs font-medium
-                        ${issue.status === "REPORTED" ? "bg-yellow-500" :
-                          issue.status === "IN_PROGRESS" ? "bg-blue-500" :
-                          "bg-green-600"}`}
-                    >
-                        {issue.status}
                     </span>
                 </div>
             </div>
