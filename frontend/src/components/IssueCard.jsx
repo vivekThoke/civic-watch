@@ -6,32 +6,38 @@ import api from '../api/axios';
 const IssueCard = ({ issue }) => {
     const navigate = useNavigate();
     const [upvotes, setUpvotes] = useState(0);
-    const [upvoted, setUpvoted] = useState(null);
+    const [upvoted, setUpvoted] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const toggleUpVote = async (e) => {
         e.stopPropagation();
 
-        if(!isAuthenticated){
+        if(!isAuthenticated()){
             navigate("/login");
             return;
         }
 
+        if (loading) return;
+        setLoading(true);
+
         try {
+            let res;
             if(upvoted){
-                await api.delete(`/issues/${issue.id}/upvote`)
-                .then(res => setUpvotes(res.data.upvotes - 1))
-                .then(res => setUpvoted(!res.data.upVotedByMe));
+                res = await api.delete(`/issues/${issue.id}/upvote`)
             }else {
-                
-                setUpvoted(true);
-                await api.post(`/issues/${issue.id}/upvote`)
-                .then(res => setUpvotes(res.data.upvotes + 1))
-                .then(res => setUpvoted(res.data.upVotedByMe));
+
+                res = await api.post(`/issues/${issue.id}/upvote`)
             }
+
+            setUpvotes(res.data.upvotes);
+            setUpvoted(res.data.upVotedByMe);
         } catch (err){
             setUpvotes(issue.upvote);
             setUpvoted(issue.upVotedByMe);
             console.log(err);
+        }
+        finally {
+            setLoading(false);
         }
     }
 
@@ -44,6 +50,7 @@ const IssueCard = ({ issue }) => {
             <div className="w-14 bg-gray-50 border-r rounded-l-lg flex flex-col items-center py-4"
                   >
                 <button onClick={toggleUpVote} 
+                    disabled={loading}
                     className={`text-xl ${upvoted ? "text-orange-500" : "text-gray-600"}`}>
                     ▲
                 </button>
