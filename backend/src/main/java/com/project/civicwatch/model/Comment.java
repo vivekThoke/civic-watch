@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @Table(name = "comment")
-public class jsx {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
