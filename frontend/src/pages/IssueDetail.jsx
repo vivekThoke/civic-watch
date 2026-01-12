@@ -94,7 +94,7 @@ const IssueDetail = () => {
             )}
 
             {/* Status Timeline */}
-            <div className="mt-12 bg-white/70 backdrop-blur-xl border border-gray-200/60 rounded-3xl shadow-lg p-8">
+            {/* <div className="mt-12 bg-white/70 backdrop-blur-xl border border-gray-200/60 rounded-3xl shadow-lg p-8">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">
                     Status Timeline
                 </h3>
@@ -103,7 +103,7 @@ const IssueDetail = () => {
                     {issue.statusHistory.map((h, idx) => (
                         <div key={idx} className="relative">
 
-                            {/* Dot */}
+                           
                             <div className="
                                 absolute -left-[10px] top-1
                                 w-4 h-4 rounded-full
@@ -129,7 +129,7 @@ const IssueDetail = () => {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div>// */}
 
             <div>
                 <CommentSection issueId={id}/>
