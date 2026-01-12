@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import api from '../api/axios'
+import CommentSection from './CommentSection'
 
 const IssueDetail = () => {
     const { id } = useParams()
@@ -128,6 +129,10 @@ const IssueDetail = () => {
                         </div>
                     ))}
                 </div>
+            </div>
+
+            <div>
+                <CommentSection issueId={id}/>
             </div>
 
         </div>
