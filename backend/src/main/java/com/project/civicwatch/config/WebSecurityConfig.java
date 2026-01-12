@@ -4,6 +4,7 @@ import com.project.civicwatch.filter.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,6 +30,7 @@ public class WebSecurityConfig {
                         auth.requestMatchers("/api/auth/**",
                                         "/api/health",
                                         "/api/issues/public/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/issues/*/comments").authenticated()
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )

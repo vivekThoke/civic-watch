@@ -2,19 +2,19 @@ package com.project.civicwatch.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.civicwatch.dto.IssueCreateRequest;
-import com.project.civicwatch.dto.IssueDetailResponse;
-import com.project.civicwatch.dto.IssueResponse;
-import com.project.civicwatch.dto.UpvoteResponse;
+import com.project.civicwatch.dto.*;
 import com.project.civicwatch.model.Issue;
 import com.project.civicwatch.model.IssueStatus;
 import com.project.civicwatch.model.User;
 import com.project.civicwatch.repository.UserRepository;
+import com.project.civicwatch.service.CommentService;
 import com.project.civicwatch.service.IssueFeedService;
 import com.project.civicwatch.service.IssueService;
 import com.project.civicwatch.service.IssueUpvoteService;
+import jakarta.validation.Valid;
 import jdk.jfr.ContentType;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +36,7 @@ public class IssueController {
     private final ObjectMapper objectMapper;
     private final IssueFeedService issueFeedService;
     private final IssueUpvoteService issueUpvoteService;
+    private final CommentService commentService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public IssueResponse createIssue(@RequestPart(value = "data") String data,
@@ -92,6 +93,21 @@ public class IssueController {
     public ResponseEntity<UpvoteResponse> deleteUpvote(@PathVariable Long id, Principal principal){
         return ResponseEntity.ok(
                 issueUpvoteService.removeUpVote(id, principal.getName())
+        );
+    }
+
+    //Comments endpoint
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long id){
+        return ResponseEntity.ok(commentService.getCommentByIssue(id));
+    }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<CommentResponse> addComment(@PathVariable Long id,
+                                                      @Valid @RequestBody CommentRequest request,
+                                                      Principal principal){
+        return ResponseEntity.ok(
+                commentService.addComment(id, principal.getName(), request)
         );
     }
 
