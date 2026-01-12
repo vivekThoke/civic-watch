@@ -9,5 +9,5 @@ public interface CommentService {
     CommentResponse addComment(Long issueId, String email, CommentRequest request);
 
     List<CommentResponse> getCommentByIssue(Long issueId);
-    
+
 }
